@@ -4,6 +4,8 @@ pragma solidity ^0.8.17;
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
+error NftMarketplace__InvalidPriceShouldBeAboveZero();
+
 contract NftMarketplace is ReentrancyGuard {
     // eip-721
     // https://eips.ethereum.org/EIPS/eip-721
@@ -16,5 +18,25 @@ contract NftMarketplace is ReentrancyGuard {
     struct Listing {
         uint256 price;
         address seller;
+    }
+
+    /////////////////////
+    // Main Functions //
+    /////////////////////
+    /*
+     * @notice Method for listing NFT
+     * @param nftAddress Address of NFT contract
+     * @param tokenId Token ID of NFT
+     * @param price sale price for each item
+     */
+    function listItem(
+        address nftAddress,
+        uint256 tokenId,
+        uint256 price
+    ) external {
+        if (price <= 0) {
+            revert NftMarketplace__InvalidPriceShouldBeAboveZero();
+        }
+        IERC721 nft = IERC721(nftAddress);
     }
 }
