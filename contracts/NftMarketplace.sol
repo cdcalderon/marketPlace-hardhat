@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 error NftMarketplace__InvalidPriceShouldBeAboveZero();
+error NftMarketplace__NotApproved();
 
 contract NftMarketplace is ReentrancyGuard {
     // eip-721
@@ -19,6 +20,14 @@ contract NftMarketplace is ReentrancyGuard {
         uint256 price;
         address seller;
     }
+
+    event ItemListed(
+        address indexed seller,
+        address indexed nftAddress,
+        uint256 indexed tokenId,
+        uint256 price
+    );
+
     // NFT Contract address -> NFT TokenId -> Listing
     mapping(address => mapping(uint256 => Listing)) private s_listings;
 
@@ -40,7 +49,11 @@ contract NftMarketplace is ReentrancyGuard {
             revert NftMarketplace__InvalidPriceShouldBeAboveZero();
         }
         IERC721 nft = IERC721(nftAddress);
+        if (nft.getApproved(tokenId) != address(this)) {
+            revert NftMarketplace__NotApproved();
+        }
 
         s_listings[nftAddress][tokenId] = Listing(price, msg.sender);
+        emit ItemListed(msg.sender, nftAddress, tokenId, price);
     }
 }
