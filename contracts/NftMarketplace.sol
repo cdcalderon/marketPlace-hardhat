@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 error NftMarketplace__InvalidPriceShouldBeAboveZero();
 error NftMarketplace__NotApproved();
 error NftMarketplace__NftAlreadyListed(address nftAddress, uint256 tokenId);
+error NftMarketplace__NftNotListed(address nftAddress, uint256 tokenId);
 
 contract NftMarketplace is ReentrancyGuard {
     // eip-721
@@ -36,6 +37,14 @@ contract NftMarketplace is ReentrancyGuard {
         Listing memory listing = s_listings[nftAddress][tokenId];
         if (listing.price > 0) {
             revert NftMarketplace__NftAlreadyListed(nftAddress, tokenId);
+        }
+        _;
+    }
+
+    modifier isListed(address nftAddress, uint256 tokenId) {
+        Listing memory listing = s_listings[nftAddress][tokenId];
+        if (listing.price <= 0) {
+            revert NftMarketplace__NftNotListed(nftAddress, tokenId);
         }
         _;
     }
