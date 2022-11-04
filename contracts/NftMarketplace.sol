@@ -77,7 +77,7 @@ contract NftMarketplace is ReentrancyGuard {
         address nftAddress,
         uint256 tokenId,
         uint256 price
-    ) external isNotListed(nftAddress, tokenId) {
+    ) external isNotListed(nftAddress, tokenId) isOwner(nftAddress, tokenId, msg.sender) {
         if (price <= 0) {
             revert NftMarketplace__InvalidPriceShouldBeAboveZero();
         }
