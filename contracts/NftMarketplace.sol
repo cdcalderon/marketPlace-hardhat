@@ -96,7 +96,7 @@ contract NftMarketplace is ReentrancyGuard {
         payable
         isListed(nftAddress, tokenId)
     {
-        Listing listedItem = s_listings[nftAddress][tokenId];
+        Listing memory listedItem = s_listings[nftAddress][tokenId];
         if (msg.value < listedItem.price) {
             revert NftMarketplace_PriceNotValid(nftAddress, tokenId, msg.value);
         }
