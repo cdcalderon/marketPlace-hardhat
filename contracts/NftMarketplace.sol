@@ -8,6 +8,7 @@ error NftMarketplace__InvalidPriceShouldBeAboveZero();
 error NftMarketplace__NotApproved();
 error NftMarketplace__NftAlreadyListed(address nftAddress, uint256 tokenId);
 error NftMarketplace__NftNotListed(address nftAddress, uint256 tokenId);
+error NftMarketplace__IsNotNftOwner();
 
 contract NftMarketplace is ReentrancyGuard {
     // eip-721
@@ -45,6 +46,20 @@ contract NftMarketplace is ReentrancyGuard {
         Listing memory listing = s_listings[nftAddress][tokenId];
         if (listing.price <= 0) {
             revert NftMarketplace__NftNotListed(nftAddress, tokenId);
+        }
+        _;
+    }
+
+    modifier isOwner(
+        address nftAddress,
+        uint256 tokenId,
+        address seller
+    ) {
+        IERC721 nft = IERC721(nftAddress);
+        address owner = nft.ownerOf(tokenId);
+
+        if (owner != seller) {
+            revert NftMarketplace__IsNotNftOwner();
         }
         _;
     }
