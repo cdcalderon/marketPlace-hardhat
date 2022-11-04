@@ -9,6 +9,7 @@ error NftMarketplace__NotApproved();
 error NftMarketplace__NftAlreadyListed(address nftAddress, uint256 tokenId);
 error NftMarketplace__NftNotListed(address nftAddress, uint256 tokenId);
 error NftMarketplace__IsNotNftOwner();
+error NftMarketplace_PriceNotValid(address nftAddress, uint256 tokenId, uint256 price);
 
 contract NftMarketplace is ReentrancyGuard {
     // eip-721
@@ -94,5 +95,10 @@ contract NftMarketplace is ReentrancyGuard {
         external
         payable
         isListed(nftAddress, tokenId)
-    {}
+    {
+        Listing listedItem = s_listings[nftAddress][tokenId];
+        if (msg.value < listedItem.price) {
+            revert NftMarketplace_PriceNotValid(nftAddress, tokenId, msg.value);
+        }
+    }
 }
