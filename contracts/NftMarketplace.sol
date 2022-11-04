@@ -89,4 +89,6 @@ contract NftMarketplace is ReentrancyGuard {
         s_listings[nftAddress][tokenId] = Listing(price, msg.sender);
         emit ItemListed(msg.sender, nftAddress, tokenId, price);
     }
+
+    function buyItem(address nftAddress, uint256 tokenId) external payable {}
 }
