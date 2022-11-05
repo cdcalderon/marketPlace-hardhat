@@ -10,6 +10,8 @@ error NftMarketplace__NftAlreadyListed(address nftAddress, uint256 tokenId);
 error NftMarketplace__NftNotListed(address nftAddress, uint256 tokenId);
 error NftMarketplace__IsNotNftOwner();
 error NftMarketplace_PriceNotValid(address nftAddress, uint256 tokenId, uint256 price);
+error NftMarketplace__NoProceeds();
+error NftMarketplace__WithdrawProceedsFailed();
 
 contract NftMarketplace is ReentrancyGuard {
     // eip-721
@@ -151,5 +153,20 @@ contract NftMarketplace is ReentrancyGuard {
     ) external isListed(nftAddress, tokenId) isOwner(nftAddress, tokenId, msg.sender) {
         s_listings[nftAddress][tokenId].price = newPrice;
         emit ItemListed(msg.sender, nftAddress, tokenId, newPrice);
+    }
+
+    /*
+     * @notice Method for withdrawing NFT proceeds from sales
+     */
+    function withdrawProceeds() external {
+        uint256 proceeds = s_proceeds[msg.sender];
+        if (proceeds <= 0) {
+            revert NftMarketplace__NoProceeds();
+        }
+        s_proceeds[msg.sender] = 0;
+        (bool success, ) = payable(msg.sender).call{value: proceeds}("");
+        if (!success) {
+            revert NftMarketplace__WithdrawProceedsFailed();
+        }
     }
 }
