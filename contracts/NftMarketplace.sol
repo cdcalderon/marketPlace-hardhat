@@ -9,7 +9,7 @@ error NftMarketplace__NotApproved();
 error NftMarketplace__NftAlreadyListed(address nftAddress, uint256 tokenId);
 error NftMarketplace__NftNotListed(address nftAddress, uint256 tokenId);
 error NftMarketplace__IsNotNftOwner();
-error NftMarketplace_PriceNotValid(address nftAddress, uint256 tokenId, uint256 price);
+error NftMarketplace__PriceNotValid(address nftAddress, uint256 tokenId, uint256 price);
 error NftMarketplace__NoProceeds();
 error NftMarketplace__WithdrawProceedsFailed();
 
@@ -118,7 +118,7 @@ contract NftMarketplace is ReentrancyGuard {
     {
         Listing memory listedItem = s_listings[nftAddress][tokenId];
         if (msg.value < listedItem.price) {
-            revert NftMarketplace_PriceNotValid(nftAddress, tokenId, msg.value);
+            revert NftMarketplace__PriceNotValid(nftAddress, tokenId, msg.value);
         }
         s_proceeds[listedItem.seller] = s_proceeds[listedItem.seller] + msg.value; // Pull over push strategy
         delete (s_listings[nftAddress][tokenId]);
