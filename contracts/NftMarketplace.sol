@@ -39,6 +39,8 @@ contract NftMarketplace is ReentrancyGuard {
         uint256 price
     );
 
+    event ItemCanceled(address indexed seller, address indexed nftAddress, uint256 tokenId);
+
     // NFT Contract address -> NFT TokenId -> Listing
     mapping(address => mapping(uint256 => Listing)) private s_listings;
 
@@ -100,6 +102,12 @@ contract NftMarketplace is ReentrancyGuard {
         emit ItemListed(msg.sender, nftAddress, tokenId, price);
     }
 
+    /*
+     * @notice Method for buying listed Nft
+     * @notice The owner of an NFT could unapprove the marketplace
+     * @param nftAddress NFT's contract address
+     * @param tokenId NFT's Token ID
+     */
     function buyItem(address nftAddress, uint256 tokenId)
         external
         payable
@@ -110,9 +118,18 @@ contract NftMarketplace is ReentrancyGuard {
         if (msg.value < listedItem.price) {
             revert NftMarketplace_PriceNotValid(nftAddress, tokenId, msg.value);
         }
-        s_proceeds[listedItem.seller] = s_proceeds[listedItem.seller] + msg.value;
+        s_proceeds[listedItem.seller] = s_proceeds[listedItem.seller] + msg.value; // Pull over push strategy
         delete (s_listings[nftAddress][tokenId]);
         IERC721(nftAddress).safeTransferFrom(listedItem.seller, msg.sender, tokenId);
         emit ItemBought(msg.sender, nftAddress, tokenId, listedItem.price);
+    }
+
+    function cancelListing(address nftAddress, uint256 tokenId)
+        external
+        isOwner(nftAddress, tokenId, msg.sender)
+        isListed(nftAddress, tokenId)
+    {
+        delete (s_listings[nftAddress][tokenId]);
+        emit ItemCanceled(msg.sender, nftAddress, tokenId);
     }
 }
