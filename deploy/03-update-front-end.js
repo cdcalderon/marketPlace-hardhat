@@ -51,6 +51,6 @@ async function updateContractAddresses() {
         contractAddresses[chainId] = { NftMarketplace: [nftMarketplace.address] }
     }
     fs.writeFileSync(frontEndContractsFile, JSON.stringify(contractAddresses))
-    //fs.writeFileSync(frontEndContractsFile2, JSON.stringify(contractAddresses))
+    fs.writeFileSync(frontEndContractsFile2, JSON.stringify(contractAddresses))
 }
 module.exports.tags = ["all", "frontend"]

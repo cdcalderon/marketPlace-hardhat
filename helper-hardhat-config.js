@@ -28,14 +28,16 @@ const networkConfig = {
 const developmentChains = ["hardhat", "localhost"]
 const VERIFICATION_BLOCK_CONFIRMATIONS = 6
 const frontEndContractsFile = "../marketplace-web-moralis/constants/networkMapping.json"
-//const frontEndContractsFile2 = "../marketplace-web-thegraph/constants/networkMapping.json"
+const frontEndContractsFile2 = "../marketplace-web-thegraph/constants/networkMapping.json"
 const frontEndAbiLocation = "../marketplace-web-moralis/constants/"
-//const frontEndAbiLocation2 = "../marketplace-web-thegraph/constants/"
+const frontEndAbiLocation2 = "../marketplace-web-thegraph/constants/"
 
 module.exports = {
     networkConfig,
     developmentChains,
     VERIFICATION_BLOCK_CONFIRMATIONS,
     frontEndContractsFile,
+    frontEndContractsFile2,
     frontEndAbiLocation,
+    frontEndAbiLocation2,
 }
