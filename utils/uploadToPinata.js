@@ -9,6 +9,18 @@ const pinata = pinataSDK(pinataApiKey, pinataApiSecret)
 
 const imagesLocation = "./images/nfts/"
 
+const metadataTemplate = {
+    name: "",
+    description: "",
+    image: "",
+    attributes: [
+        {
+            trait_type: "Rarity",
+            value: 1,
+        },
+    ],
+}
+
 async function storeImages(imagesLocation) {
     console.log(imagesLocation)
     const fullImagesPath = path.resolve(__dirname, imagesLocation)
@@ -29,9 +41,21 @@ async function storeImages(imagesLocation) {
     return { responses, files }
 }
 
-async function storeTokenUriMetadata(metadata) {}
+async function storeTokenUriMetadata(metadata) {
+    try {
+        const response = await pinata.pinJSONToIPFS(metadata)
+        return response
+    } catch (error) {
+        console.log(error)
+    }
+    return null
+}
 
-storeImages(imagesLocation)
+async function pushImagesAndMetaData(imagesLocation) {
+    const { responses: imageUploadResponses, files } = await storeImages(imagesLocation)
+}
+
+pushImagesAndMetaData(imagesLocation)
     .then(() => process.exit(0))
     .catch((error) => {
         console.error(error)
