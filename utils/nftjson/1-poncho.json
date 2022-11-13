@@ -1,0 +1,21 @@
+{
+    "id": "59289e30-e6bf-4139-8eee-f11607cec3d2",
+    "name": "PONCHO-BAT-TUTU",
+    "description": "The Frenchie Bat Tutu!",
+    "image": "https://ipfs.io/ipfs/QmRZonV2ZwUBFiYeMypdgKzsQa1gsXfmKXV4E6W6ETdUoU?filename=poncho-frenchie-bat-tutu.png",
+    "date": 1667072934,
+    "attributes": [
+        {
+            "trait_type": "Face",
+            "value": "Brown"
+        },
+        {
+            "trait_type": "Nose",
+            "value": "Masked"
+        },
+        {
+            "trait_type": "Rarity",
+            "value": "1"
+        }
+    ]
+}

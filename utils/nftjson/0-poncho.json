@@ -1,0 +1,21 @@
+{
+    "id": "75ce1f3e-f16e-4f00-849f-0936480c54ef",
+    "name": "PONCHO",
+    "description": "The Frenchy!",
+    "image": "https://ipfs.io/ipfs/QmcCzvMzWaBEvtJyuc6pxWLjE3na4Yr28jGiELBp9iRX2T?filename=PonchoFrenchBulldog.png",
+    "date": 1667072934,
+    "attributes": [
+        {
+            "trait_type": "Face",
+            "value": "Brown"
+        },
+        {
+            "trait_type": "Nose",
+            "value": "Standard"
+        },
+        {
+            "trait_type": "Rarity",
+            "value": "10"
+        }
+    ]
+}
