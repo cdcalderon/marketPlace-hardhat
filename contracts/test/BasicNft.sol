@@ -4,8 +4,10 @@ pragma solidity ^0.8.7;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract BasicNft is ERC721 {
+    // string public constant TOKEN_URI =
+    //     "ipfs://bafybeieqthrdz6xgqvf4uv5jqvpq7cfwbawdz77snikr6ceipff6uo53yy/?filename=0-poncho.json"; // My Frenchy
     string public constant TOKEN_URI =
-        "ipfs://bafybeieqthrdz6xgqvf4uv5jqvpq7cfwbawdz77snikr6ceipff6uo53yy/?filename=0-poncho.json"; // My Frenchy
+        "ipfs://QmWq7azr6G1cVaeBAwUx5gVuATDzkgf19s8xQguj5jVPaE/?filename=1-poncho.json"; // My Frenchy
     uint256 private s_tokenCounter;
 
     event DogMinted(uint256 indexed tokenId);
