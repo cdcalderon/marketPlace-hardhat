@@ -49,6 +49,46 @@ const createImage = async () => {
 
     // TODO: Need a way to break out if image_count is higher than what can be generated...
     //  Pending ...
+
+    while (imageCount <= config.image_count) {
+        if (imagesFailed > 100) {
+            break
+        }
+
+        // Determine Layer Path
+        for (var i = 0; i < config.layers.length; i++) {
+            // Fetch layers
+            const attributes = await getAttributes(`${layersBasePath}/${config.layers[i]}/`)
+            let totalWeight = 0
+
+            for (var x = 0; x < attributes.length; x++) {
+                totalWeight += rarity.layers[i].attributes[x].weight
+            }
+
+            let random = Math.floor(Math.random() * totalWeight)
+            let selectedLayer
+
+            for (var j = 0; j < attributes.length; j++) {
+                // subtract the current weight from the random weight until we reach a sub zero value.
+                random -= rarity.layers[i].attributes[j].weight
+
+                if (random < 0) {
+                    selectedLayer = attributes[j].filename
+                    layerNames.push(attributes[j].filename)
+                    break
+                }
+            }
+
+            // Determine layer path
+            const layerPath = `${layersBasePath}/${config.layers[i]}/${selectedLayer}`
+            layersPath += layerPath
+
+            // Load layer
+            const { path, attribute } = await loadAttribute(layerPath)
+            AttributesLoaded.push(attribute)
+        }
+        console.log(AttributesLoaded)
+    }
 }
 
 // Save the image
@@ -64,7 +104,6 @@ const saveMetadata = (_metadata, _imageCount) => {
         `${buildBasePath}/json/${_imageCount}.json`,
         JSON.stringify(_metadata, null, 2)
     )
-    console.log(_metadata, _imageCount)
 }
 
 const main = () => {
