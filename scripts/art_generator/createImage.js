@@ -47,8 +47,7 @@ const createImage = async () => {
     let layersPath = ""
     let imageHashes = []
 
-    // TODO: Need a way to break out if image_count is higher than what can be generated...
-    //  Pending ...
+    // We need a way to break out if image_count is higher than what can be generated...
 
     while (imageCount <= config.image_count) {
         if (imagesFailed > 100) {
@@ -87,7 +86,53 @@ const createImage = async () => {
             const { path, attribute } = await loadAttribute(layerPath)
             AttributesLoaded.push(attribute)
         }
-        console.log(AttributesLoaded)
+
+        const imageHash = crypto.createHash("sha1").update(layersPath).digest("hex")
+        let isCreated
+
+        for (var i = 0; i < imageHashes.length; i++) {
+            if (imageHash === imageHashes[i]) {
+                console.log(`Image already created...\n`)
+                imagesFailed++
+                AttributesLoaded = []
+                layerNames = []
+                layersPath = ""
+                isCreated = true
+            }
+        }
+
+        imageHashes.push(imageHash)
+
+        if (isCreated) {
+            continue
+        }
+
+        for (var i = 0; i < AttributesLoaded.length; i++) {
+            ctx.drawImage(
+                AttributesLoaded[i],
+                0,
+                0,
+                config.image_details.width,
+                config.image_details.height
+            )
+        }
+
+        // Save Image & Metadata
+        saveImage(imageCount)
+        saveMetadata(
+            createMetadata(imageHash, imageCount, defineAttributes(layerNames)),
+            imageCount
+        )
+
+        console.log(imageHash)
+        console.log(`Created Image: ${imageCount}\n`)
+
+        // Increment, Reset values & canvas
+        imageCount++
+        AttributesLoaded = []
+        layerNames = []
+        layersPath = ""
+        ctx.clearRect(0, 0, config.image_details.width, config.image_details.height)
     }
 }
 
