@@ -12,8 +12,8 @@ const layersBasePath = path.join(base, "/layers")
 let rarity
 
 // Define Helpers
-const { getAttributes, loadAttribute } = require("../helpers/attributes")
-const { createMetadata, defineAttributes } = require("../helpers/metadata")
+const { getAttributes, loadAttribute } = require("./helpers/attributes")
+const { createMetadata, defineAttributes } = require("./helpers/metadata")
 
 const initialize = () => {
     try {
