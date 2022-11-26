@@ -1,4 +1,4 @@
-const config = require("../settings/config.json")
+const config = require("./settings/config.json")
 const path = require("path")
 const fs = require("fs")
 const crypto = require("crypto")
@@ -18,7 +18,7 @@ const { createMetadata, defineAttributes } = require("./helpers/metadata")
 const initialize = () => {
     try {
         // Determine if rarity.json exists
-        rarity = require("../settings/rarity.json")
+        rarity = require("./settings/rarity.json")
     } catch (error) {
         throw new Error("Missing rarity.json file")
     }

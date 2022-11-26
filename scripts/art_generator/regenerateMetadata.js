@@ -1,7 +1,7 @@
 const path = require("path")
 const fs = require("fs")
 
-const config = require("../settings/config.json")
+const config = require("./settings/config.json")
 const base = process.cwd()
 const buildBasePath = path.join(base, "/build")
 

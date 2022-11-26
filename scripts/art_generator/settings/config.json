@@ -1,13 +1,6 @@
 {
-    "layers": [
-        "Backgrounds",
-        "Face",
-        "Hats and Hair",
-        "Eyes and Glasses",
-        "Nose",
-        "Mouth"
-    ],
-    "image_description": "Open Punks",
+    "layers": ["Backgrounds", "Face", "Hats and Hair", "Eyes and Glasses", "Nose", "Mouth"],
+    "image_description": "Poncho",
     "image_count": 25,
     "image_details": {
         "width": 512,
